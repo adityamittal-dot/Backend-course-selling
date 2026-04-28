@@ -3,13 +3,13 @@ const Router = express.Router;
 
 const courseRouter = Router();
 
-courseRouter.get("/courses", function(req, res){
+courseRouter.get("/purchase", function(req, res){
   res.json({
     message: "courses endpoint"
   })
 })
 
-courseRouter.post("/course/purchase", function(req, res){
+courseRouter.post("/preview", function(req, res){
   res.json({
     message: "purchase endpoint"
   })
