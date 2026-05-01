@@ -2,8 +2,9 @@ const express = require("express");
 const Router = express.Router;
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { userModel } = require("../db");
-
+const JWT_USER_PASSWORD = "ihateJUIT"
 const userRouter = Router();
 
 const signupSchema = z.object({
@@ -48,11 +49,49 @@ userRouter.post("/signup", async function(req, res){
   }
 });
 
-userRouter.post("/signin", function(req, res){
-  res.json({
-    message: "signin endpoint"
-  })
-})
+const signinSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6)
+});
+
+userRouter.post("/signin", async function(req, res){
+  try {
+    const parsedData = signinSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      return res.status(400).json({
+        message: "Invalid input format",
+        errors: parsedData.error.issues
+      });
+    }
+
+    const { email, password } = parsedData.data;
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(403).json({
+        message: "Incorrect credentials (booooooo)" 
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      const token = jwt.sign({
+        id: user._id
+      }, JWT_USER_PASSWORD);
+
+      res.json({
+        token: token
+      });
+    } else {
+      res.status(403).json({
+        message: "Incorrect credentials (booooooo)" 
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 userRouter.get("/purchases", function(req, res){
   res.json({
