@@ -28,9 +28,9 @@ try {
 
     const { email, password, firstName, lastName } = parsedData.data;
 
-    const existingUser = await adminModel.findOne({ email });
-    if (existingUser) {
-      return res.status(409).json({ message: "User already exists" });
+    const existingAdmin = await adminModel.findOne({ email });
+    if (existingAdmin) {
+      return res.status(409).json({ message: "Admin already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -68,17 +68,17 @@ try {
 
     const { email, password } = parsedData.data;
 
-    const user = await adminModel.findOne({ email });
-    if (!user) {
+    const Admin = await adminModel.findOne({ email });
+    if (!Admin) {
       return res.status(403).json({
         message: "Incorrect credentials (booooooo)" 
       });
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, Admin.password);
     if (passwordMatch) {
       const token = jwt.sign({
-        id: user._id
+        id: Admin._id
       }, JWT_ADMIN_PASSWORD);
 
       res.json({
