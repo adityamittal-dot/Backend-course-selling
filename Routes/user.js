@@ -4,7 +4,8 @@ const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { userModel } = require("../db");
-const JWT_USER_PASSWORD = "ihateJUIT"
+const { JWT_USER_PASSWORD } = require("../config");
+const { userMiddleware} = require("../middleware/user"); 
 const userRouter = Router();
 
 const signupSchema = z.object({
@@ -93,7 +94,7 @@ userRouter.post("/signin", async function(req, res){
   }
 });
 
-userRouter.get("/purchases", function(req, res){
+userRouter.get("/purchases",  userMiddleware, function(req, res){
   res.json({
     message: "purchases endpoint"
   })
