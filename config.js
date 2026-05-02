@@ -1,7 +1,9 @@
-const JWT_USER_PASSWORD = "ihateJUIT"
-const JWT_ADMIN_PASSWORD = "ihateJUIT";
+const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD
+const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_PASSWORD 
+const DATABASE_URL = process.env.DATABASE_URL
 
 module.exports = {
   JWT_USER_PASSWORD,
-  JWT_ADMIN_PASSWORD  
+  JWT_ADMIN_PASSWORD,
+  DATABASE_URL  
 }
