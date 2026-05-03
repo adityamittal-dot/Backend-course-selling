@@ -16,12 +16,15 @@ app.use("/user", userRouter);
 app.use("/course", courseRouter);
 app.use("/admin", adminRouter);
 
-async function main(){
-    await mongoose.connect(process.env.DATABASE_URL)
+// Connect to MongoDB
+mongoose.connect(process.env.DATABASE_URL)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
-    app.listen(process.env.PORT || 3000, () => {
-    console.log("Server is running on port " + (process.env.PORT || 3000));
-    });
-}
+// Start the server (ignored by Vercel if exported)
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server is running on port " + (process.env.PORT || 3000));
+});
 
-main()
+// Export the app for Vercel Serverless deployment
+module.exports = app;
