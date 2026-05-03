@@ -81,7 +81,8 @@ userRouter.post("/signin", async function(req, res){
       }, JWT_USER_PASSWORD);
 
       res.json({
-        token: token
+        token: token,
+        firstName: user.firstName
       });
     } else {
       res.status(403).json({

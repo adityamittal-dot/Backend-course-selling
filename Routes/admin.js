@@ -82,7 +82,8 @@ try {
       }, JWT_ADMIN_PASSWORD);
 
       res.json({
-        token: token
+        token: token,
+        firstName: Admin.firstName
       });
     } else {
       res.status(403).json({
