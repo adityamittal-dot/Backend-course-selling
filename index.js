@@ -17,9 +17,7 @@ app.use("/course", courseRouter);
 app.use("/admin", adminRouter);
 
 // Connect to MongoDB
-mongoose.connect(process.env.DATABASE_URL)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect(process.env.DATABASE_URL);
 
 // Start the server (ignored by Vercel if exported)
 app.listen(process.env.PORT || 3000, () => {
